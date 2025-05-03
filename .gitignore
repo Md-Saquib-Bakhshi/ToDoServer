@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+.env
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Byte-compiled and cache
+*.pyo
+*.pyd
+*.pyc
+
+# Logs
+*.log
+
+# React build output
+frontend/build/
+frontend/node_modules/
+frontend/.env
+
+# Local SQLite or test DBs
+*.sqlite3
+*.db
+
+# Coverage & testing
+.coverage
+htmlcov/
+pytest_cache/
+.tox/
+
+# Environment files (should be recreated locally)
+.env
+.env.*
+
+# Misc
+*.bak
+*.tmp
+
+
