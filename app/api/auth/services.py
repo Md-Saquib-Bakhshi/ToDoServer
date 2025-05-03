@@ -1,7 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-from datetime import timedelta
 from app.api.auth.models import User
 from app.core.security import create_access_token
 
@@ -21,5 +20,11 @@ def authenticate_user(email: str, password: str, db: Session):
     user = db.query(User).filter(User.email == email).first()
     if not user or not pwd_context.verify(password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    token = create_access_token({"sub": user.email}, timedelta(minutes=30))
+    token = create_access_token({"sub": user.email})
     return {"access_token": token, "token_type": "bearer"}
+
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
+
+def verify_password(plain_password, hashed_password) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)

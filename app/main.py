@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.auth.routes import router as auth_router
+from app.api.todo.routes import router as todo_router
 from app.database.init_db import init_db  
 
 app = FastAPI()
@@ -14,6 +15,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
+app.include_router(todo_router, prefix="/todos", tags=["Todos"])
 
 @app.on_event("startup")
 def on_startup():
