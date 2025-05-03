@@ -29,19 +29,26 @@ def get_profile(current_user: User = Depends(get_current_user)):
 # ----------------------------
 # Update profile (e.g. email)
 @router.put("/profile", response_model=UserProfile)
-def update_profile(
-    updated: UpdateUserProfile,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
-):
+def update_profile(updated_profile: UpdateUserProfile, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    # Find the current user based on their ID (from get_current_user)
     user = db.query(User).filter(User.id == current_user.id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    user.email = updated.email
+    # Check if the new email is already taken (other than the current user's own email)
+    if updated_profile.email != user.email:
+        existing_user = db.query(User).filter(User.email == updated_profile.email).first()
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email already registered")
+
+    # Update the user's email and password (if provided)
+    user.email = updated_profile.email
+    if updated_profile.password:
+        user.hashed_password = hash_password(updated_profile.password)  # Hashing new password
     db.commit()
     db.refresh(user)
     return user
+
 
 # ----------------------------
 # Delete user account

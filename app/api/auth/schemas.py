@@ -17,6 +17,7 @@ class TokenResponse(BaseModel):
 class UserProfile(BaseModel):
     id: int
     email: EmailStr
+    password: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -24,3 +25,4 @@ class UserProfile(BaseModel):
 # For updating user profile (e.g., only email)
 class UpdateUserProfile(BaseModel):
     email: EmailStr
+    password: Optional[str] = None
